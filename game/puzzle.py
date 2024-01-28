@@ -251,7 +251,7 @@ class Puzzle:
             for j in range(len(self.puzzle_numbers)):
                 if self.puzzle_numbers[j]==9:
                     pos_missing = j
-            a= board_path[i]
+            a = board_path[i]
             temp = self.puzzle_numbers[board_path[i]]
             self.puzzle_numbers[board_path[i]] = self.puzzle_numbers[pos_missing]
             self.puzzle_numbers[pos_missing] = temp
