@@ -22,8 +22,6 @@ snapshots (10%)
 # ie iterative deepening depth first search
 
 
-def generate_children(node):
-    pass
 
 
 def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int = 10) -> List[int]:
@@ -47,7 +45,7 @@ def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int 
     # RECURSIVE CASE
     # Generate child nodes representing all valid moves from the current state.
     # You'll need to define how you determine valid moves and create child PathNodes.
-    children = generate_children(node)
+    children = node.generate_children()
     for child in children:
         # Recursively call the function on child nodes with the same depth limit.
         result = recursivelyFindSolution(child, goalState, maxDepth)
