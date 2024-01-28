@@ -1,6 +1,5 @@
 #This is the only file you need to work on. You do NOT need to modify other files
 from typing import List
-
 from sol.functionLib import PathNode
 
 '''
@@ -29,8 +28,7 @@ snapshots (10%)
 def iterativeDeepening(puzzle: List[int]):  # input is a list of 9 numbers. 8 is "empty"
     print("Input Puzzle: {}".format(puzzle))
     goal_state: List[int] = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-
-    PathNode
+    root: PathNode = PathNode(0, puzzle)
 
     return list
 
