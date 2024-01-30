@@ -17,8 +17,16 @@ snapshots (10%)
 1. [Branch/Bound](https://www.geeksforgeeks.org/8-puzzle-problem-using-branch-and-bound/)
 2. 8-puzzle problem [medium writeup](https://medium.com/@dpthegrey/8-puzzle-problem-2ec7d832b6db)
 
-# What it should do
-![this](https://miro.medium.com/v2/resize:fit:864/format:webp/1*ybyQUZivJH1Te7x7cHqddg.png)
+## What it should do
+Something like this:
+![sol](treeDemoToFindSolution.png)
 
-# What mine currently does
+## Changelog (newest->oldest)
+
+### Jan 30 \@ 8AM 
+1. Solution isn't memoized.
+2. It's going deep. Need to implement a queue? Not iterative deepening yet.
 ![that](TheseStinkToDebug.png)
+
+### Earlier
+Got DFS working! Not iterative deepening or A* yet.
