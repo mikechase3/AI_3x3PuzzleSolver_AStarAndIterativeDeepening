@@ -9,7 +9,7 @@ class PathNode():
         """Initialize a node for the search tree"""
         self.treeDepth = treeDepth
         self.state: List[int] = state
-        self.lastPosSwap: int = lastPosSwap if lastPosSwap is not None else -69  # Do I need this?
+        self.lastPosSwap: int = lastPosSwap if lastPosSwap is not None else -1  # Do I need this?
 
     def __repr__(self):
         return f"PathNode(state={self.state}, treeDepth={self.treeDepth}, lastPosSwap={self.lastPosSwap})"

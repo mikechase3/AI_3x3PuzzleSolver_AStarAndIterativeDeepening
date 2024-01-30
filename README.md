@@ -30,3 +30,61 @@ Something like this:
 
 ### Earlier
 Got DFS working! Not iterative deepening or A* yet.
+
+ 
+### Am I desperate: AI Solution
+```python
+from typing import List
+from sol.PathNode import PathNode
+
+def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int = 10, visited=set()) -> List[PathNode]:
+    """
+    Recursively find a solution path from the initial state to the goal state.
+    :param node: Represents information about a node in a map.
+    :param goalState: The target state.
+    :param maxDepth: Maximum allowed tree depth.
+    :param visited: A set to keep track of visited states.
+    :return: The path from the initial state to the goal state as a list of PathNode objects,
+             or an empty list if no solution is found within the given depth.
+    """
+    # BASE CASE
+    if node.state == goalState:
+        return [node]
+
+    if node.treeDepth >= maxDepth:
+        return []
+
+    # Memoization: Check if the current state has been visited before at the same or lower depth.
+    if (tuple(node.state), node.treeDepth) in visited:
+        return []
+
+    visited.add((tuple(node.state), node.treeDepth))
+
+    # RECURSIVE CASE
+    children = node.generate_children()
+    for child in children:
+        # Recursively call the function on child nodes with the same depth limit.
+        result = recursivelyFindSolution(child, goalState, maxDepth, visited)
+        if result:
+            return [node] + result
+
+    return []  # No solutions found from this node.
+
+def iterativeDeepening(puzzle: List[int], maxDepth=10) -> List[int]:
+    print("DEBUG Trace solution.iterativeDeepening: Input Puzzle: {}".format(puzzle))
+    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    root = PathNode(state=puzzle, treeDepth=0, parent=None)
+
+    for depth in range(maxDepth + 1):
+        # Use a set to store visited states at each depth.
+        visited = set()
+        solution_nodes = recursivelyFindSolution(root, goal_state, depth, visited)
+        solution_path: List[int] = []  # stores solution as integers for assignment output.
+
+        if solution_nodes:
+            for n in solution_nodes:
+                solution_path.append(n.lastPosSwap)
+            return solution_path
+
+    raise Exception("No solutions exist up to depth {}.".format(maxDepth))
+```
