@@ -14,7 +14,11 @@ class PathNode():
     def __repr__(self):
         return f"PathNode(state={self.state}, treeDepth={self.treeDepth}, lastPosSwap={self.lastPosSwap})"
 
-    # def swapPositions(self, firstIndexPos, secondIndexPos) -> "PathNode":  # Is this type hint valid?
+    def getStateStr(self):
+        return str(self.state)
+
+
+    # def swapPositions(self, firstIndexPos, secondIndexPos) -> "PathNode":  # How is this type hint valid?
     #     """
     #     Swap positions in state & return a new pathnode with those indexes swapped.
     #     :param firstIndexPos: for swapping...
@@ -50,14 +54,7 @@ class PathNode():
         :return: A list of PathNode objects representing the children.
         """
         children = []
-
-        # Find the position of the empty space (assuming 8 represents the empty space)
-        empty_index = self.state.index(8)
-
-        # Define the moves for the empty space as up, down, left, and right
-        # [0, 1, 2,
-        #  3, 4, 5,
-        #  6, 7, 8]
+        empty_index = self.state.index(8)  # Finds the '8' position where 8 is the 'empty' space.
         move_offsets = [-3, 3, -1, 1]  # Corresponding to up, down, left, and right in a 3x3 grid
 
         # Loop through all possible moves

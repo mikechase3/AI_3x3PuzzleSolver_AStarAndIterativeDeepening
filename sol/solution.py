@@ -15,6 +15,10 @@ perform DFS correctly (10%)
 (7) A-star search correctly get an optimal path (25%)
 (8) Provide a short document describing what you have achieved and limits, with some
 snapshots (10%)
+
+REFERENCES USED
+(1) https://www.geeksforgeeks.org/8-puzzle-problem-using-branch-and-bound/
+
 '''
 
 
