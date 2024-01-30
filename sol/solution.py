@@ -22,9 +22,7 @@ snapshots (10%)
 # ie iterative deepening depth first search
 
 
-
-
-def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int = 10) -> List[int]:
+def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int = 10) -> List[PathNode]:
     """
     Not sure yet - but we'll call itself until we find a solution!
     :param node: represents information about a node in a map
@@ -38,7 +36,7 @@ def recursivelyFindSolution(node: PathNode, goalState: List[int], maxDepth: int 
     if node.state == goalState:
         return [node]
 
-    if node.state >= maxDepth:
+    if node.treeDepth >= maxDepth:
         # raise RuntimeWarning("No solution was found. Try increasing depth?")
         return []
 
@@ -60,12 +58,16 @@ def iterativeDeepening(puzzle: List[int], maxDepth=10) -> List[int]:
     root = PathNode(state=puzzle, treeDepth=0, parent=None)
 
     for depth in range(maxDepth + 1):
-        solution_path = recursivelyFindSolution(root, goal_state, depth)
-        if solution_path:
+        solution_nodes = recursivelyFindSolution(root, goal_state, depth)
+        solution_path: List[int] = []  # stores solution as integers for assignment output.
+
+        if solution_nodes:
+            for n in solution_nodes:
+                solution_path.append(n.lastPosSwap)
             # Extract the states from the nodes in the solution path if required, or
             # change the PathNode class to store the necessary information that needs
             # to be returned, then format them in the way expected by the problem statement
-            return [node.state for node in solution_path]
+            return solution_path
 
     raise Exception("No solutions exist up to depth {}.".format(maxDepth))
 
@@ -75,3 +77,13 @@ def astar(puzzle: List[int]):
     print(puzzle)
     path = []
     return list
+
+
+if __name__ == "__main__":
+    initial_state = [0, 1, 2, 3, 4, 5, 6, 8, 7]  # create your initial PathNode instance
+    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]     # define your goal state
+    initial_PathNode_state = PathNode(initial_state, 0)
+    solution_path = recursivelyFindSolution(initial_PathNode_state, goal_state)
+    print(solution_path)
+
+    print("Solution: {}".format(iterativeDeepening(initial_state)))

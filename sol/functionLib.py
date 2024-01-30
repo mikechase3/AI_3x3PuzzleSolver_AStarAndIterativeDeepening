@@ -2,7 +2,9 @@ from typing import List, Optional
 
 
 class PathNode():
-
+    """
+    Reprsents a node in the tree/graph of possible solutions.
+    """
     def __init__(self, state: List[int], treeDepth: int = 0, parent=None, lastPosSwap: Optional[int] = None):
         """Initialize a node for the search tree"""
         self.treeDepth = treeDepth
@@ -17,7 +19,7 @@ class PathNode():
     #     Swap positions in state & return a new pathnode with those indexes swapped.
     #     :param firstIndexPos: for swapping...
     #     :param secondIndexPos:
-    #     :return a new noew node
+    #     :return a new node
     #     """
     #     new_state = self.state.copy()
     #     new_state[firstIndexPos], new_state[secondIndexPos] = self.state[secondIndexPos], self.state[firstIndexPos]
@@ -74,7 +76,7 @@ class PathNode():
             new_state = self.swapPositions(self.state, empty_index, new_index)
 
             # Create a new child node with the new state and incremented depth
-            child_node = PathNode(state=new_state, treeDepth=self.treeDepth + 1, parent=self)
+            child_node = PathNode(state=new_state, treeDepth=self.treeDepth + 1, parent=self, lastPosSwap=new_index)
             children.append(child_node)
 
         return children
