@@ -1,7 +1,7 @@
 # This is the only file you need to work on. You do NOT need to modify other files
 from typing import List
 
-from sol.functionLib import PathNode
+from sol.PathNode import PathNode
 
 '''
 REQUIREMENTS

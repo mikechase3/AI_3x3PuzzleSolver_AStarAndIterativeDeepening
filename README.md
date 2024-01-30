@@ -21,4 +21,4 @@ snapshots (10%)
 ![this](https://miro.medium.com/v2/resize:fit:864/format:webp/1*ybyQUZivJH1Te7x7cHqddg.png)
 
 # What mine currently does
-![that](img.png)
+![that](TheseStinkToDebug.png)
