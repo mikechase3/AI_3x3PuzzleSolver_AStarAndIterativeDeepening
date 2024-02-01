@@ -32,7 +32,7 @@ Something like this:
 Got DFS working! Not iterative deepening or A* yet.
 
  
-### Am I desperate: AI Solution
+### If Desperate - AI Solution
 ```python
 from typing import List
 from sol.PathNode import PathNode

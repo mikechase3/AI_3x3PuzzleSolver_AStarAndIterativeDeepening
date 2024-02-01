@@ -16,7 +16,14 @@ class PathNode():
 
     def getStateStr(self):
         return str(self.state)
-
+    def h_cost(self):
+        wrongSpots: int = 0
+        for number in self.state:
+            if number != self.state.index(number):
+                wrongSpots += 1
+        return wrongSpots
+    def f_cost(self):
+        return self.treeDepth + self.h_cost()
 
     # def swapPositions(self, firstIndexPos, secondIndexPos) -> "PathNode":  # How is this type hint valid?
     #     """
@@ -77,3 +84,4 @@ class PathNode():
             children.append(child_node)
 
         return children
+

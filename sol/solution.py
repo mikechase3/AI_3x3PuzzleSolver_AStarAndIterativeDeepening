@@ -1,4 +1,5 @@
 # This is the only file you need to work on. You do NOT need to modify other files
+import heapq
 from typing import List
 
 from sol.PathNode import PathNode
@@ -8,7 +9,8 @@ from sol.PathNode import PathNode
 # ie iterative deepening depth first search
 
 
-def recursivelyFindSolution(node: PathNode, goalState: List[int], depth: int, maxDepth: int = 10, visitedNodes: List[int] = None) -> List[PathNode]:
+def recursiveIterativeDeepening(node: PathNode, goalState: List[int], depth: int, maxDepth: int = 10,
+                                visitedNodes: List[int] = None) -> List[PathNode]:
     """
     Not sure yet - but we'll call itself until we find a solution!
     :param node: represents information about a node in a map
@@ -20,12 +22,10 @@ def recursivelyFindSolution(node: PathNode, goalState: List[int], depth: int, ma
     """
     if visitedNodes is None:
         visitedNodes = []
-    # BASE CASE
+    # BASE CASES
     if node.state == goalState:
         return [node]
-
     if depth >= maxDepth:
-        # raise RuntimeWarning("No solution was found. Try increasing depth?")
         return []
 
     # RECURSIVE CASE
@@ -36,7 +36,7 @@ def recursivelyFindSolution(node: PathNode, goalState: List[int], depth: int, ma
         visitedNodes.append(currentNodeStateAsStr)  # Mark node as visited.
         children = node.generate_children()
         for child in children:
-            result = recursivelyFindSolution(child, goalState, depth + 1, maxDepth, visitedNodes)
+            result = recursiveIterativeDeepening(child, goalState, depth + 1, maxDepth, visitedNodes)
             if result:
                 return [node] + result
 
@@ -49,7 +49,7 @@ def iterativeDeepening(puzzle: List[int], maxDepth=10) -> List[int]:
     root = PathNode(state=puzzle, treeDepth=0, parent=None)
 
     for depth in range(maxDepth + 1):
-        solution_nodes = recursivelyFindSolution(root, goal_state, depth, maxDepth)
+        solution_nodes = recursiveIterativeDeepening(root, goal_state, depth, maxDepth)
         solution_path: List[int] = []  # stores solution as integers for assignment output.
 
         if solution_nodes:
@@ -63,18 +63,69 @@ def iterativeDeepening(puzzle: List[int], maxDepth=10) -> List[int]:
     raise Exception("No solutions exist up to depth {}.".format(maxDepth))
 
 
-# This will be for next project
-def astar(puzzle: List[int]):
+def calculateHeuristicHammingMethod(pn: PathNode) -> int:
+    wrongSpots: int = 0
+    for number in pn.state:
+        if number != pn.state.index(number):
+            wrongSpots += 1
+    return wrongSpots
+
+def calculate_manhattan_heuristic(node: PathNode) -> int:
+    manhattan_distance = 0
+    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]  # Assuming '0' represents the empty tile
+
+    for index, value in enumerate(node.state):
+        if value == 8:  # Skip the empty tile
+            continue
+        current_row, current_col = divmod(index, 3)
+        goal_row, goal_col = divmod(goal_state.index(value), 3)
+        manhattan_distance += abs(current_row - goal_row) + abs(current_col - goal_col)
+
+    return manhattan_distance
+
+
+
+def aStarRecursive(pn: PathNode, depth: int, maxDepth: int, visitedNodes: List[str] = None,
+                   hq: heapq = None) -> List[PathNode]:
+    # BASE CASES
+    if visitedNodes == None:
+        visitedNodes = []
+    if hq == None:
+        hq = []
+    if pn.state == [0, 1, 2, 3, 4, 5, 6, 7, 8]:
+        return [pn]
+    if depth >= maxDepth:
+        return []
+
+
+    # RECURSIVE CASE
+    visitedNodes.append(pn.getStateStr())
+    children = pn.generate_children()
+    for child in children:
+        burden: int = calculateHeuristicHammingMethod(child)  # Est. cost to reach goal from this node
+        hq.append((burden, child))
+
+
+        # if child.getStateStr() not in visitedNodes:
+        #     visitedNodes.append(child.getStateStr())
+        #     result = aStarRecursive(child, visitedNodes, )
+        #     if result:
+        #         return [pn] + result
+    return []
+
+
+def astar(puzzle: List[int]) -> List[int]:
+    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    rootNode = PathNode(puzzle)
+
     print(puzzle)
     path = []
-    return list
+    return path
 
 
 if __name__ == "__main__":
     initial_state = [0, 1, 2, 3, 8, 5, 6, 4, 7]  # create your initial PathNode instance
-    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]     # define your goal state
+    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]  # define your goal state
     initial_PathNode_state = PathNode(initial_state, 0)
-    solution_path = recursivelyFindSolution(initial_PathNode_state, goal_state, depth=0, maxDepth=10)
-    print(solution_path)
-    print("Solution: {}".format(iterativeDeepening(initial_state)))
-
+    pn = PathNode(initial_state, 0)
+    print(calculateHeuristicHammingMethod(pn))
