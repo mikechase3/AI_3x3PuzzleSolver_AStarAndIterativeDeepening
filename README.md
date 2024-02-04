@@ -13,6 +13,10 @@ perform DFS correctly (10%)
 (8) Provide a short document describing what you have achieved and limits, with some
 snapshots (10%)
 
+## AI Generated Functions
+1. Used a `hamming_distance()` function to calculate the number of misplaced tiles.
+2. Used a `manhattan_distance()` function to calculate the sum of the distances of the tiles from their goal positions.
+3. 
 ## References
 1. [Branch/Bound](https://www.geeksforgeeks.org/8-puzzle-problem-using-branch-and-bound/)
 2. 8-puzzle problem [medium writeup](https://medium.com/@dpthegrey/8-puzzle-problem-2ec7d832b6db)

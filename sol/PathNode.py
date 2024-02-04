@@ -8,48 +8,35 @@ class PathNode():
     treeDepth: int
     state: List[int]
     lastPosSwap: int
+
     def __init__(self, state: List[int], treeDepth: int = 0, parent=None, lastPosSwap: Optional[int] = None):
         """Initialize a node for the search tree"""
         self.treeDepth = treeDepth
         self.state: List[int] = state
         self.lastPosSwap: int = lastPosSwap if lastPosSwap is not None else -1  # Do I need this?
+        self.parent = parent
 
     def __repr__(self):
         return f"PathNode(state={self.state}, treeDepth={self.treeDepth}, lastPosSwap={self.lastPosSwap})"
 
     def getStateStr(self):
         return str(self.state)
-    def h_cost_v1(self):  # Hamering Method for calculating the cost
-        wrongSpots: int = 0
-        for number in self.state:
-            if number != self.state.index(number):
-                wrongSpots += 1
-        return wrongSpots
 
-    # AI Generated; my work is above but this is a better implementation.
-    def calculate_hamming_distance(node: PathNode) -> int:
-        # Assuming the goal state is a property of PathNode for easier access
-        return sum(node.state[i] != PathNode.goal_state[i] for i in range(len(node.state))
-                   if node.state[i] != 0)
+    def calculate_hamming_distance(self) -> int:
+        """
+        Calculate the Hamming distance between the current state and the goal state.
+        The Hamming distance is the number of tiles in the wrong position.
+        :return: The Hamming distance
+        """
+        goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        return sum(s != g and s != 8 for s, g in zip(self.state, goal_state))
 
     def f_cost(self):  # f(n) = g(n) + h(n)
-        return self.treeDepth + self.h_cost_v1()
-
-    # def swapPositions(self, firstIndexPos, secondIndexPos) -> "PathNode":  # How is this type hint valid?
-    #     """
-    #     Swap positions in state & return a new pathnode with those indexes swapped.
-    #     :param firstIndexPos: for swapping...
-    #     :param secondIndexPos:
-    #     :return a new node
-    #     """
-    #     new_state = self.state.copy()
-    #     new_state[firstIndexPos], new_state[secondIndexPos] = self.state[secondIndexPos], self.state[firstIndexPos]
-    #
-    #     # Create a new PathNode with the modified state
-    #     new_node = PathNode(new_state, self.treeDepth + 1, parent=self, lastPosSwap=secondIndexPos)
-    #     return new_node
-
-
+        """
+        Calculate the f(n) cost of the node.
+        :return:
+        """
+        return self.treeDepth + self.calculate_hamming_distance()
 
     def swapPositions(self, lst, pos1, pos2):
         """
@@ -94,4 +81,11 @@ class PathNode():
             children.append(child_node)
 
         return children
+
+    def __lt__(self, other):
+        # Primary comparison by f-cost
+        if self.f_cost() != other.f_cost():
+            return self.f_cost() < other.f_cost()
+        # Secondary comparison can be based on any other consistent and distinct attribute
+        return self.treeDepth < other.treeDepth
 
