@@ -63,25 +63,8 @@ def iterativeDeepening(puzzle: List[int], maxDepth=10) -> List[int]:
     raise Exception("No solutions exist up to depth {}.".format(maxDepth))
 
 
-def calculateHeuristicHammingMethod(pn: PathNode) -> int:
-    wrongSpots: int = 0
-    for number in pn.state:
-        if number != pn.state.index(number):
-            wrongSpots += 1
-    return wrongSpots
 
-def calculate_manhattan_heuristic(node: PathNode) -> int:
-    manhattan_distance = 0
-    goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]  # Assuming '0' represents the empty tile
 
-    for index, value in enumerate(node.state):
-        if value == 8:  # Skip the empty tile
-            continue
-        current_row, current_col = divmod(index, 3)
-        goal_row, goal_col = divmod(goal_state.index(value), 3)
-        manhattan_distance += abs(current_row - goal_row) + abs(current_col - goal_col)
-
-    return manhattan_distance
 
 
 
@@ -97,14 +80,15 @@ def aStarRecursive(pn: PathNode, depth: int, maxDepth: int, visitedNodes: List[s
     if depth >= maxDepth:
         return []
 
-
     # RECURSIVE CASE
     visitedNodes.append(pn.getStateStr())
     children = pn.generate_children()
     for child in children:
-        burden: int = calculateHeuristicHammingMethod(child)  # Est. cost to reach goal from this node
+        burden: int = child.f_cost()
+        # burden: int = calculateHeuristicHammingMethod(child)  # Est. cost to reach goal from this node
         hq.append((burden, child))
-
+        # heapq.heapify(hq)
+        aStarRecursive(child, depth + 1, maxDepth, visitedNodes, hq)
 
         # if child.getStateStr() not in visitedNodes:
         #     visitedNodes.append(child.getStateStr())
@@ -126,6 +110,6 @@ def astar(puzzle: List[int]) -> List[int]:
 if __name__ == "__main__":
     initial_state = [0, 1, 2, 3, 8, 5, 6, 4, 7]  # create your initial PathNode instance
     goal_state = [0, 1, 2, 3, 4, 5, 6, 7, 8]  # define your goal state
-    initial_PathNode_state = PathNode(initial_state, 0)
     pn = PathNode(initial_state, 0)
-    print(calculateHeuristicHammingMethod(pn))
+    sol = aStarRecursive(pn, 0, 10)
+    print(sol)

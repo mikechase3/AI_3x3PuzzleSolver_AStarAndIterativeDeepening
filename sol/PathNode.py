@@ -5,6 +5,9 @@ class PathNode():
     """
     Reprsents a node in the tree/graph of possible solutions.
     """
+    treeDepth: int
+    state: List[int]
+    lastPosSwap: int
     def __init__(self, state: List[int], treeDepth: int = 0, parent=None, lastPosSwap: Optional[int] = None):
         """Initialize a node for the search tree"""
         self.treeDepth = treeDepth
@@ -16,14 +19,21 @@ class PathNode():
 
     def getStateStr(self):
         return str(self.state)
-    def h_cost(self):
+    def h_cost_v1(self):  # Hamering Method for calculating the cost
         wrongSpots: int = 0
         for number in self.state:
             if number != self.state.index(number):
                 wrongSpots += 1
         return wrongSpots
-    def f_cost(self):
-        return self.treeDepth + self.h_cost()
+
+    # AI Generated; my work is above but this is a better implementation.
+    def calculate_hamming_distance(node: PathNode) -> int:
+        # Assuming the goal state is a property of PathNode for easier access
+        return sum(node.state[i] != PathNode.goal_state[i] for i in range(len(node.state))
+                   if node.state[i] != 0)
+
+    def f_cost(self):  # f(n) = g(n) + h(n)
+        return self.treeDepth + self.h_cost_v1()
 
     # def swapPositions(self, firstIndexPos, secondIndexPos) -> "PathNode":  # How is this type hint valid?
     #     """
@@ -57,7 +67,7 @@ class PathNode():
     def generate_children(self):
         """
         Generate all valid child nodes from the current state.
-        Uses 8-puzzle theory: https://medium.com/@dpthegrey/8-puzzle-problem-2ec7d832b6db
+        AI Generated; not my own work.
         :return: A list of PathNode objects representing the children.
         """
         children = []
